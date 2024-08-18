@@ -56,6 +56,13 @@
                     }
                 }
 
+                .minPriceText {
+                    font-size: ptr(12);
+                    font-weight: 600;
+                    opacity: .8;
+                    color: $COLOR-DANGER;
+                }
+
             }
 
             .finalButton {

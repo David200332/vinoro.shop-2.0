@@ -42,6 +42,10 @@ const StepperBox: React.FC<StepperBoxProps> = (
         }
     }, [stepsContent])
 
+    const minPrice = Number(process.env.NEXT_PUBLIC_MIN_ORDER_PRICE) || 800;
+
+    const isOrderPrevented = Boolean(totalPrice < minPrice);
+
     return (
         <div className={styles.content}>
             <div className={styles['container-xl']}>
@@ -75,15 +79,16 @@ const StepperBox: React.FC<StepperBoxProps> = (
                                 {!currentStep?.isFirst ? (
                                     <Button label={t(`common:back`)} type="outlined" click={backButtonHandler} />
                                 ) : (
-                                    <TotalPrice totalPrice={totalPrice} />
+                                    <div style={{ marginRight: "24px" }}><TotalPrice totalPrice={totalPrice} /></div>
                                 )}
                             </div>
                             <div className={styles.nextButton}>
                                 <Button
                                     label={currentStep?.id === 2 ? t(`order:placeAnOrder`) : t(`common:next`)}
                                     click={nextButtonHandler}
-                                    type={currentStep?.isButtonDisabled || !Object.keys(products).length ? "disabled" : "default"}
+                                    type={currentStep?.isButtonDisabled || !Object.keys(products).length || isOrderPrevented ? "disabled" : "default"}
                                 />
+                                <p style={{ display: isOrderPrevented ? "block" : "none", marginTop: "12px" }} className={styles.minPriceText}>{t(`common:minPriceOrder`)}{minPrice} ₴</p>
                             </div>
                         </div>
                     </div>)
