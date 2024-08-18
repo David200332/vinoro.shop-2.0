@@ -28,6 +28,7 @@
     },
     "total": "Total",
     "noProductsInBasket": "You have no items added to your cart",
+    "minPriceOrder": "Minimum order price is ",
     "next": "Next",
     "back": "Back",
     "shoppingCart": "Shopping cart",

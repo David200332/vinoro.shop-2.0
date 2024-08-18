@@ -16,6 +16,8 @@ const Basket: React.FC<BasketProps> = ({ closeBasketHandler }) => {
 
     const { basketProducts, totalPrice } = useSelector((state: RootState) => state.basketReducer);
 
+    const minPrice = Number(process.env.NEXT_PUBLIC_MIN_ORDER_PRICE) || 800
+
     const { t } = useTranslation();
 
     const basketProductsValues = useMemo(() => Object.values(basketProducts), [basketProducts]);
@@ -24,6 +26,8 @@ const Basket: React.FC<BasketProps> = ({ closeBasketHandler }) => {
         event.stopPropagation();
         closeBasketHandler();
     }
+
+    const isOrderPrevented = Boolean(totalPrice < minPrice);
 
     return (
         <div className={styles.basket}>
@@ -41,11 +45,16 @@ const Basket: React.FC<BasketProps> = ({ closeBasketHandler }) => {
             {!!basketProductsValues.length && (
                  <div className={styles.confirmOrder}>
                     <TotalPrice totalPrice={totalPrice} />
-                    <Link href="/order/" passHref replace>
-                        <a className={styles.buttonWrapper}>
-                            <Button label={t(`common:next`)} styles={{ width: '100%' }} click={() => null} type="default" />
-                        </a>
-                    </Link>
+                    <div style={{ display: "flex", justifyItems: "center", flexDirection: "column" }}>
+                        <div style={{ marginBottom: "12px"}}>
+                            <Link href="/order/" passHref replace>
+                                <a className={styles.buttonWrapper} style={{ textDecoration: "none" }}>
+                                    <Button label={t(`common:next`)} styles={{ width: '100%' }} click={() => null} type={isOrderPrevented ? "disabled" : "default"} />
+                                </a>
+                            </Link>
+                        </div>
+                        <p style={{ visibility: isOrderPrevented ? "visible" : "hidden" }} className={styles.minPriceText}>{t(`common:minPriceOrder`)}{minPrice} ₴</p>
+                    </div>
                 </div>
             )}
         </div>

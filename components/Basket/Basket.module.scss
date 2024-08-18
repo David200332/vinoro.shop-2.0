@@ -99,9 +99,15 @@
 
     .confirmOrder {
         display: flex;
-        align-items: center;
         margin-top: 20px;
         width: 100%;
         justify-content: space-between;
+
+        .minPriceText {
+            font-size: ptr(12);
+            font-weight: 600;
+            opacity: .8;
+            color: $COLOR-DANGER;
+        }
     }
 }
